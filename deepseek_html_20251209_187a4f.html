@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Token Fetcher Pro - Complete Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4267B2;
+            --primary-dark: #365899;
+            --secondary: #00c9ff;
+            --secondary-dark: #0099cc;
+            --accent: #ff6b6b;
+            --accent-dark: #ff4757;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --purple: #9b59b6;
+            --cyan: #1abc9c;
+            --gradient-primary: linear-gradient(135deg, #4267B2, #00c9ff);
+            --gradient-secondary: linear-gradient(135deg, #9b59b6, #3498db);
+            --gradient-accent: linear-gradient(135deg, #ff6b6b, #ffa502);
+            --gradient-dark: linear-gradient(135deg, #1a1a2e, #16213e);
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --glow: 0 0 15px rgba(66, 103, 178, 0.5);
+            --glow-success: 0 0 15px rgba(46, 204, 113, 0.5);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--gradient-dark);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(66, 103, 178, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 201, 255, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(155, 89, 182, 0.1) 0%, transparent 30%);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+            position: relative;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .title-container h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            background: linear-gradient(to right, #00c9ff, #9b59b6, #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .title-container p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: rgba(30, 30, 46, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 12px 25px;
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(66, 103, 178, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .tab-btn.active {
+            background: var(--gradient-primary);
+            border-color: var(--secondary);
+            box-shadow: var(--glow);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Card Styles */
+        .card {
+            background: rgba(30, 30, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow), 0 0 20px rgba(66, 103, 178, 0.3);
+        }
+        
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--secondary);
+        }
+        
+        .card-title i {
+            background: var(--gradient-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Input Section */
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #ddd;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            z-index: 1;
+        }
+        
+        .input-with-icon input, .input-with-icon textarea, .input-with-icon select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background: rgba(20, 20, 35, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .input-with-icon input:focus, .input-with-icon textarea:focus, .input-with-icon select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: var(--glow);
+        }
+        
+        .input-with-icon textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        
+        /* Token Grid */
+        .token-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .token-option {
+            background: rgba(20, 20, 35, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .token-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s;
+        }
+        
+        .token-option:hover::before {
+            left: 100%;
+        }
+        
+        .token-option:hover {
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .token-option.active {
+            background: var(--gradient-primary);
+            border-color: var(--secondary);
+            box-shadow: var(--glow);
+        }
+        
+        .token-code {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .token-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        /* Buttons */
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(66, 103, 178, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #365899, #0099cc);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(66, 103, 178, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #8e44ad, #2980b9);
+            transform: translateY(-3px);
+        }
+        
+        .btn-accent {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background: linear-gradient(135deg, #ff4757, #e67e22);
+            transform: translateY(-3px);
+        }
+        
+        /* Output Section */
+        .output-container {
+            position: relative;
+        }
+        
+        .token-display {
+            background: rgba(20, 20, 35, 0.9);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            min-height: 150px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .token-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 90%, rgba(66, 103, 178, 0.05));
+        }
+        
+        .token-success {
+            border-color: var(--success);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .token-error {
+            border-color: var(--danger);
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 20, 35, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            z-index: 10;
+            display: none;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Stats */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(30, 30, 46, 0.8);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #00c9ff, #9b59b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        /* Auto Interaction Tool Styles */
+        .toggle-section {
+            background-color: rgba(20, 20, 35, 0.7);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-group input {
+            margin-right: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        
+        .checkbox-group label {
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .hidden-section {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .reactions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .reaction-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background-color: rgba(40, 40, 60, 0.7);
+            border-radius: 6px;
+        }
+        
+        /* Log Container */
+        .log-container {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            height: 300px;
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            border: 2px solid #333;
+        }
+        
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .log-time {
+            color: #0af;
+        }
+        
+        .log-success {
+            color: #0f0;
+        }
+        
+        .log-warning {
+            color: #ff9900;
+        }
+        
+        .log-error {
+            color: #f44;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(66, 103, 178, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(66, 103, 178, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(66, 103, 178, 0); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: rgba(30, 30, 46, 0.95);
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 20, 35, 0.5);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #365899, #0099cc);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title-container h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .token-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .btn {
+                min-width: 100%;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo floating">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="title-container">
+                    <h1>FACEBOOK TOOLS PRO</h1>
+                    <p>Complete suite for Facebook automation and token management</p>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="token-tool">
+                <i class="fas fa-key"></i> Token Fetcher
+            </button>
+            <button class="tab-btn" data-tab="auto-tool">
+                <i class="fas fa-robot"></i> Auto Interaction
+            </button>
+            <button class="tab-btn" data-tab="about">
+                <i class="fas fa-info-circle"></i> About
+            </button>
+        </div>
+        
+        <!-- Token Fetcher Tab -->
+        <div id="token-tool" class="tab-content active">
+            <div class="main-content">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-cogs"></i>
+                        <span>Configuration</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="token-type"><i class="fas fa-key"></i> Token Type</label>
+                        <div class="token-grid" id="token-grid">
+                            <!-- Token options will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="cookie-input"><i class="fas fa-cookie-bite"></i> Facebook Cookie</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-key"></i>
+                            <textarea id="cookie-input" placeholder="Paste your Facebook cookie here..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="buttons-container">
+                        <button class="btn btn-primary" id="fetch-btn">
+                            <i class="fas fa-bolt"></i> Fetch Token
+                        </button>
+                        <button class="btn btn-secondary" id="clear-btn">
+                            <i class="fas fa-broom"></i> Clear
+                        </button>
+                        <button class="btn btn-accent" id="sample-btn">
+                            <i class="fas fa-vial"></i> Sample Cookie
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card output-container">
+                    <div class="card-title">
+                        <i class="fas fa-code"></i>
+                        <span>Token Output</span>
+                    </div>
+                    
+                    <div class="loading-overlay" id="loading-overlay">
+                        <div class="spinner"></div>
+                        <p>Fetching token from API...</p>
+                    </div>
+                    
+                    <div class="token-display" id="token-display">
+                        <div style="text-align: center; padding: 40px 20px; color: #888;">
+                            <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <p>Your fetched token will appear here</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">Select token type, enter cookie, and click "Fetch Token"</p>
+                        </div>
+                    </div>
+                    
+                    <div class="buttons-container" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="copy-btn" disabled>
+                            <i class="far fa-copy"></i> Copy Token
+                        </button>
+                        <button class="btn btn-secondary" id="test-btn" disabled>
+                            <i class="fas fa-vial"></i> Test Token
+                        </button>
+                        <button class="btn btn-accent" id="save-btn" disabled>
+                            <i class="far fa-save"></i> Save Token
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-value" id="tokens-fetched">0</div>
+                    <div class="stat-label">Tokens Fetched</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="success-rate">100%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="api-calls">0</div>
+                    <div class="stat-label">API Calls</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="active-time">00:00</div>
+                    <div class="stat-label">Active Time</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Auto Interaction Tab -->
+        <div id="auto-tool" class="tab-content">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-robot"></i>
+                    <span>Facebook Auto Interaction Tool</span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="auto-cookie"><i class="fas fa-cookie-bite"></i> Facebook Cookie</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <textarea id="auto-cookie" placeholder="Paste your Facebook cookie here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Comment Mode -->
+                <div class="toggle-section">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="comment-mode">
+                        <label for="comment-mode"><strong>Comment Mode </strong></label>
+                    </div>
+                    
+                    <div id="comment-settings" class="hidden-section">
+                        <div class="input-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="custom-comment">
+                                <label for="custom-comment">Custom Comment Content</label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group" id="custom-comment-input" style="display: none;">
+                            <label>Comment Content (separate by |)</label>
+                            <textarea id="comment-content" rows="3" placeholder="Hello {emoji} | Good post {time} | Nice {string}"></textarea>
+                            <small>Variables: {emoji} = random emoji, {time} = current time, {string} = random string</small>
+                        </div>
+                        
+                        <div class="input-group" id="file-comment-input">
+                            <label>Comment File (simulated)</label>
+                            <input type="text" id="comment-file" placeholder="comments.txt (simulated)">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Max Comments Per Day</label>
+                            <input type="number" id="max-comments" value="100" min="1">
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="image-mode">
+                            <label for="image-mode">Include Images</label>
+                        </div>
+                        
+                        <div class="input-group" id="image-settings" style="display: none;">
+                            <label>Image Source</label>
+                            <select id="image-source">
+                                <option value="link">Enter image link</option>
+                                <option value="file">Load from file</option>
+                            </select>
+                            
+                            <div id="image-link-input" style="margin-top: 10px;">
+                                <input type="text" id="image-link" placeholder="Enter image URL...">
+                            </div>
+                            
+                            <div id="image-file-input" style="margin-top: 10px; display: none;">
+                                <input type="text" id="image-file-input" placeholder="images.txt (simulated)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reaction Mode -->
+                <div class="toggle-section">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="react-mode">
+                        <label for="react-mode"><strong>Reaction Mode </strong></label>
+                    </div>
+                    
+                    <div id="react-settings" class="hidden-section">
+                        <label>Select Reactions</label>
+                        <div class="reactions-container">
+                            <div class="reaction-item">
+                                <input type="checkbox" id="like" checked>
+                                <label for="like">👍 LIKE</label>
+                            </div>
+                            <div class="reaction-item">
+                                <input type="checkbox" id="love" checked>
+                                <label for="love">❤️ LOVE</label>
+                            </div>
+                            <div class="reaction-item">
+                                <input type="checkbox" id="care">
+                                <label for="care">🥰 CARE</label>
+                            </div>
+                            <div class="reaction-item">
+                                <input type="checkbox" id="haha">
+                                <label for="haha">😂 HAHA</label>
+                            </div>
+                            <div class="reaction-item">
+                                <input type="checkbox" id="wow">
+                                <label for="wow">😯 WOW</label>
+                            </div>
+                            <div class="reaction-item">
+                                <input type="checkbox" id="sad">
+                                <label for="sad">😢 SAD</label>
+                            </div>
+                            <div class="reaction-item">
+                                <input type="checkbox" id="angry">
+                                <label for="angry">😠 ANGRY</label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Max Reactions Per Day</label>
+                            <input type="number" id="max-reactions" value="200" min="1">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Settings -->
+                <div class="input-group">
+                    <label><i class="fas fa-ban"></i> Blacklist Keywords (separate by |)</label>
+                    <input type="text" id="blacklist-words" placeholder="spam|advertisement|buy now">
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-user-slash"></i> Blacklist IDs (separate by |)</label>
+                    <input type="text" id="blacklist-ids" placeholder="123456789|987654321">
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-chart-line"></i> Interaction Intensity</label>
+                    <select id="interaction-intensity">
+                        <option value="1">1 post every 1-15 minutes</option>
+                        <option value="2">2 posts every 1-15 minutes</option>
+                        <option value="3">3 posts every 1-15 minutes</option>
+                        <option value="4">4 posts every 1-15 minutes</option>
+                        <option value="5" selected>5 posts every 1-15 minutes</option>
+                    </select>
+                </div>
+                
+                <div class="buttons-container">
+                    <button class="btn btn-primary" id="start-auto-btn">
+                        <i class="fas fa-play-circle"></i> Start Auto Interaction
+                    </button>
+                    <button class="btn btn-secondary" id="stop-auto-btn">
+                        <i class="fas fa-stop-circle"></i> Stop
+                    </button>
+                    <button class="btn btn-accent" id="reset-auto-btn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+                
+                <!-- Activity Log -->
+                <div class="input-group" style="margin-top: 30px;">
+                    <label><i class="fas fa-terminal"></i> Activity Log</label>
+                    <div class="log-container" id="auto-log">
+                        <div class="log-entry"><span class="log-time">[12:00:00]</span> Auto Interaction Tool Ready</div>
+                    </div>
+                </div>
+                
+                <!-- Auto Stats -->
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-value" id="comments-sent">0</div>
+                        <div class="stat-label">Comments Sent</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="reactions-sent">0</div>
+                        <div class="stat-label">Reactions Sent</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="groups-processed">0</div>
+                        <div class="stat-label">Groups Processed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="auto-runtime">00:00</div>
+                        <div class="stat-label">Run Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- About Tab -->
+        <div id="about" class="tab-content">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About This Tool</span>
+                </div>
+                
+                <div style="line-height: 1.8;">
+                    <h3 style="color: var(--secondary); margin-bottom: 15px;">Facebook Tools Pro v2.0</h3>
+                    
+                    <p style="margin-bottom: 15px;">This is a comprehensive tool for Facebook automation and token management, built as a single HTML file for easy deployment.</p>
+                    
+                    <h4 style="color: var(--secondary); margin: 20px 0 10px;">Features:</h4>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li>Token fetching from Facebook cookies</li>
+                        <li>Multiple token type support</li>
+                        <li>Auto interaction (comments and reactions)</li>
+                        <li>Customizable settings</li>
+                        <li>Activity logging</li>
+                        <li>Statistics tracking</li>
+                        <li>Responsive design</li>
+                    </ul>
+                    
+                    <h4 style="color: var(--secondary); margin: 20px 0 10px;">Disclaimer:</h4>
+                    <div style="background: rgba(231, 76, 60, 0.1); padding: 15px; border-radius: var(--radius-sm); border-left: 4px solid var(--danger);">
+                        <p><strong>This tool is for educational purposes only.</strong></p>
+                        <p style="margin-top: 10px;">Automated interaction with Facebook may violate their Terms of Service. Use at your own risk.</p>
+                        <p style="margin-top: 10px;">The developer is not responsible for any account restrictions or bans that may occur.</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                        <p>Deploy this tool on Render, GitHub Pages, Netlify, or any static hosting service.</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #888;">Single HTML file - No backend required for simulation mode</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Facebook Tools Pro v2.0 | For educational purposes only | Use responsibly</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                <i class="fas fa-exclamation-triangle"></i> This tool simulates Facebook automation. Real automation requires proper API integration.
+            </p>
+        </footer>
+    </div>
+
+    <!-- Warning Modal -->
+    <div class="modal" id="warning-modal">
+        <div class="modal-content">
+            <div class="card-title" style="margin-bottom: 15px;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Important Notice</span>
+            </div>
+            
+            <div style="line-height: 1.6; margin-bottom: 20px;">
+                <p><strong>This tool is for educational purposes only.</strong></p>
+                <p style="margin-top: 10px;">Automated interaction with Facebook may violate their Terms of Service.</p>
+                <p style="margin-top: 10px;">Use at your own risk. The developer is not responsible for any account restrictions or bans that may occur.</p>
+                <p style="margin-top: 10px;">This is a simulation tool and does not connect to real Facebook APIs.</p>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-primary" id="accept-warning">
+                    <i class="fas fa-check"></i> I Understand & Accept
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===============================
+        // GLOBAL VARIABLES AND CONSTANTS
+        // ===============================
+        
+        // Token options data
+        const tokenOptions = [
+            { code: "EAAAAU", desc: "Standard Access Token" },
+            { code: "EAAD", desc: "Extended Access Token" },
+            { code: "EAAAAAY", desc: "App Access Token" },
+            { code: "EAADYP", desc: "App Proof Token" },
+            { code: "EAAD6V7", desc: "Long-lived Token" },
+            { code: "EAAC2SPKT", desc: "Page Access Token" },
+            { code: "EAAGOfO", desc: "Group Access Token" },
+            { code: "EAAVB", desc: "Video Token" },
+            { code: "EAAC4", desc: "Ads Token" },
+            { code: "EAACW5F", desc: "Business Token" },
+            { code: "EAAB", desc: "Basic Token" },
+            { code: "EAAQ", desc: "Query Token" },
+            { code: "EAAGNO4", desc: "Notification Token" },
+            { code: "EAAH", desc: "High Permissions" },
+            { code: "EAAC", desc: "Client Token" },
+            { code: "EAAClA", desc: "Limited Token" },
+            { code: "EAATK", desc: "Test Token" },
+            { code: "EAAI7", desc: "Internal Token" }
+        ];
+        
+        // Emojis for auto interaction
+        const emojis = ["😀","😃","😄","😁","😆","😅","😂","🤣","🥲","🥹","☺️","😊","😇","🙂","🙃","😉","😌", "😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳", "🙂‍↕️","😏","😒","🙂‍↔️","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢", "😭","😮‍💨","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🫣","🤗", "🫡","🤔","🫢","🤭","🤫","🤥","😶","😶‍🌫️","😐","😑","😬","🫨","🫠","🙄","😯","😦","😧", "😮","😲","🥱","😴","🤤","😪","😵","😵‍💫","🫥","🤐","🥴","🤢","🤮","🤧","😷","🤒", "🤕","🤑","🤠","😈","👿","👹","👺","🤡"];
+        
+        // State variables for Token Fetcher
+        let selectedTokenType = "EAAAAU";
+        let tokensFetched = 0;
+        let successfulFetches = 0;
+        let apiCalls = 0;
+        let startTime = new Date();
+        let activeTimeInterval;
+        
+        // State variables for Auto Interaction
+        let autoRunning = false;
+        let autoInterval;
+        let autoStartTime;
+        let autoRuntimeInterval;
+        let commentsSent = 0;
+        let reactionsSent = 0;
+        let groupsProcessed = 0;
+        let usedComments = new Set();
+        
+        // DOM elements for Token Fetcher
+        const tokenGrid = document.getElementById('token-grid');
+        const cookieInput = document.getElementById('cookie-input');
+        const fetchBtn = document.getElementById('fetch-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const sampleBtn = document.getElementById('sample-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const testBtn = document.getElementById('test-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const tokenDisplay = document.getElementById('token-display');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        
+        // Stats elements for Token Fetcher
+        const tokensFetchedEl = document.getElementById('tokens-fetched');
+        const successRateEl = document.getElementById('success-rate');
+        const apiCallsEl = document.getElementById('api-calls');
+        const activeTimeEl = document.getElementById('active-time');
+        
+        // DOM elements for Auto Interaction
+        const commentModeCheckbox = document.getElementById('comment-mode');
+        const reactModeCheckbox = document.getElementById('react-mode');
+        const customCommentCheckbox = document.getElementById('custom-comment');
+        const commentSettings = document.getElementById('comment-settings');
+        const reactSettings = document.getElementById('react-settings');
+        const customCommentInput = document.getElementById('custom-comment-input');
+        const fileCommentInput = document.getElementById('file-comment-input');
+        const imageModeCheckbox = document.getElementById('image-mode');
+        const imageSettings = document.getElementById('image-settings');
+        const imageSourceSelect = document.getElementById('image-source');
+        const startAutoBtn = document.getElementById('start-auto-btn');
+        const stopAutoBtn = document.getElementById('stop-auto-btn');
+        const resetAutoBtn = document.getElementById('reset-auto-btn');
+        const autoLog = document.getElementById('auto-log');
+        const commentsSentEl = document.getElementById('comments-sent');
+        const reactionsSentEl = document.getElementById('reactions-sent');
+        const groupsProcessedEl = document.getElementById('groups-processed');
+        const autoRuntimeEl = document.getElementById('auto-runtime');
+        
+        // Modal elements
+        const warningModal = document.getElementById('warning-modal');
+        const acceptWarningBtn = document.getElementById('accept-warning');
+        
+        // Tab elements
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // ===============================
+        // UTILITY FUNCTIONS
+        // ===============================
+        
+        // Format time as HH:MM:SS
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', {hour12: false});
+        }
+        
+        // Generate random string
+        function generateRandomString(length = 6) {
+            return Math.random().toString(36).substring(2, 2 + length).toUpperCase();
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? 'rgba(46, 204, 113, 0.9)' : type === 'error' ? 'rgba(231, 76, 60, 0.9)' : 'rgba(52, 152, 219, 0.9)'};
+                color: white;
+                border-radius: var(--radius-sm);
+                z-index: 10000;
+                box-shadow: var(--shadow);
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // ===============================
+        // TOKEN FETCHER FUNCTIONS
+        // ===============================
+        
+        // Initialize token grid
+        function initializeTokenGrid() {
+            tokenGrid.innerHTML = '';
+            
+            tokenOptions.forEach(token => {
+                const tokenElement = document.createElement('div');
+                tokenElement.className = `token-option ${token.code === selectedTokenType ? 'active' : ''}`;
+                tokenElement.innerHTML = `
+                    <div class="token-code">${token.code}</div>
+                    <div class="token-desc">${token.desc}</div>
+                `;
+                
+                tokenElement.addEventListener('click', () => {
+                    // Remove active class from all
+                    document.querySelectorAll('.token-option').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked
+                    tokenElement.classList.add('active');
+                    selectedTokenType = token.code;
+                    
+                    // Add visual feedback
+                    tokenElement.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        tokenElement.style.transform = '';
+                    }, 150);
+                });
+                
+                tokenGrid.appendChild(tokenElement);
+            });
+        }
+        
+        // Update statistics
+        function updateStats() {
+            tokensFetchedEl.textContent = tokensFetched;
+            apiCallsEl.textContent = apiCalls;
+            
+            const successRate = apiCalls > 0 ? Math.round((successfulFetches / apiCalls) * 100) : 100;
+            successRateEl.textContent = `${successRate}%`;
+            successRateEl.style.color = successRate >= 80 ? '#2ecc71' : successRate >= 60 ? '#f39c12' : '#e74c3c';
+        }
+        
+        // Update active time
+        function updateActiveTime() {
+            const now = new Date();
+            const diff = Math.floor((now - startTime) / 1000);
+            const minutes = Math.floor(diff / 60);
+            const seconds = diff % 60;
+            activeTimeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Simulate API call for token fetching
+        function simulateFetchToken(tokenType, cookie) {
+            return new Promise((resolve) => {
+                // Simulate network delay
+                setTimeout(() => {
+                    apiCalls++;
+                    
+                    // 85% success rate simulation
+                    const isSuccess = Math.random() < 0.85 && cookie.trim().length > 10;
+                    
+                    if (isSuccess) {
+                        successfulFetches++;
+                        
+                        // Generate a fake token based on type
+                        const base = tokenType;
+                        const randomPart = Math.random().toString(36).substring(2, 30).toUpperCase();
+                        const token = `${base}${randomPart}`;
+                        
+                        resolve({
+                            success: true,
+                            token: token,
+                            token_type: tokenType,
+                            timestamp: new Date().toISOString(),
+                            length: token.length,
+                            message: "Token fetched successfully!"
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            token: null,
+                            message: "Failed to fetch token. Invalid cookie or server error."
+                        });
+                    }
+                }, 1500 + Math.random() * 1000); // Random delay between 1.5-2.5 seconds
+            });
+        }
+        
+        // Display token result
+        function displayTokenResult(result) {
+            loadingOverlay.style.display = 'none';
+            tokenDisplay.classList.remove('token-success', 'token-error');
+            
+            if (result.success) {
+                tokenDisplay.innerHTML = `
+                    <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-check-circle" style="color: #2ecc71; font-size: 1.5rem;"></i>
+                        <span style="font-weight: 600; color: #2ecc71;">${result.message}</span>
+                    </div>
+                    <div style="background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="font-size: 0.9rem; color: #aaa; margin-bottom: 5px;">Token Type: ${result.token_type}</div>
+                        <div style="font-size: 1.2rem; word-break: break-all; font-weight: 600; color: #2ecc71;">${result.token}</div>
+                    </div>
+                    <div style="font-size: 0.9rem; color: #888; margin-top: 20px;">
+                        <i class="fas fa-info-circle"></i> Token copied to clipboard automatically
+                    </div>
+                `;
+                tokenDisplay.classList.add('token-success');
+                
+                // Enable buttons
+                copyBtn.disabled = false;
+                testBtn.disabled = false;
+                saveBtn.disabled = false;
+                
+                // Copy to clipboard
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(result.token).then(() => {
+                        // Show copy confirmation
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        copyBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                        
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalText;
+                            copyBtn.style.background = '';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+                }
+                
+                tokensFetched++;
+            } else {
+                tokenDisplay.innerHTML = `
+                    <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-exclamation-triangle" style="color: #e74c3c; font-size: 1.5rem;"></i>
+                        <span style="font-weight: 600; color: #e74c3c;">${result.message}</span>
+                    </div>
+                    <div style="background: rgba(231, 76, 60, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="font-size: 0.9rem; color: #aaa; margin-bottom: 5px;">Error Details</div>
+                        <div style="font-size: 1rem; word-break: break-all; color: #e74c3c;">
+                            Possible issues:<br>
+                            1. Invalid or expired cookie<br>
+                            2. Server temporarily unavailable<br>
+                            3. Token type not supported<br>
+                            4. Rate limit exceeded
+                        </div>
+                    </div>
+                    <div style="font-size: 0.9rem; color: #888; margin-top: 20px;">
+                        <i class="fas fa-lightbulb"></i> Try again with a fresh cookie or different token type
+                    </div>
+                `;
+                tokenDisplay.classList.add('token-error');
+                
+                // Disable buttons
+                copyBtn.disabled = true;
+                testBtn.disabled = true;
+                saveBtn.disabled = true;
+            }
+            
+            updateStats();
+        }
+        
+        // ===============================
+        // AUTO INTERACTION FUNCTIONS
+        // ===============================
+        
+        // Process content with variables
+        function processContent(content) {
+            const timeNow = formatTime(new Date());
+            const randomString = generateRandomString(6);
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            return content
+                .replace(/{emoji}/g, randomEmoji)
+                .replace(/{time}/g, timeNow)
+                .replace(/{string}/g, randomString);
+        }
+        
+        // Add log entry to auto interaction log
+        function addAutoLog(message, type = 'info') {
+            const time = formatTime(new Date());
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            
+            let typeClass = '';
+            if (type === 'success') typeClass = 'log-success';
+            else if (type === 'warning') typeClass = 'log-warning';
+            else if (type === 'error') typeClass = 'log-error';
+            
+            logEntry.innerHTML = `<span class="log-time">[${time}]</span> <span class="${typeClass}">${message}</span>`;
+            autoLog.appendChild(logEntry);
+            autoLog.scrollTop = autoLog.scrollHeight;
+        }
+        
+        // Update auto interaction statistics
+        function updateAutoStats() {
+            commentsSentEl.textContent = commentsSent;
+            reactionsSentEl.textContent = reactionsSent;
+            groupsProcessedEl.textContent = groupsProcessed;
+        }
+        
+        // Update auto runtime
+        function updateAutoRuntime() {
+            if (!autoStartTime) return;
+            
+            const now = new Date();
+            const diff = Math.floor((now - autoStartTime) / 1000);
+            const minutes = Math.floor(diff / 60);
+            const seconds = diff % 60;
+            autoRuntimeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Simulate auto interaction cycle
+        function simulateAutoInteraction() {
+            if (!autoRunning) return;
+            
+            const commentMode = commentModeCheckbox.checked;
+            const reactMode = reactModeCheckbox.checked;
+            const maxComments = parseInt(document.getElementById('max-comments').value) || 100;
+            const maxReactions = parseInt(document.getElementById('max-reactions').value) || 200;
+            const intensity = parseInt(document.getElementById('interaction-intensity').value) || 1;
+            
+            // Simulate processing groups
+            const groupsToProcess = Math.min(intensity, 5);
+            groupsProcessed += groupsToProcess;
+            
+            // Simulate comments
+            if (commentMode && commentsSent < maxComments) {
+                const commentsToSend = Math.min(groupsToProcess, maxComments - commentsSent);
+                
+                for (let i = 0; i < commentsToSend; i++) {
+                    commentsSent++;
+                    
+                    // Generate comment content
+                    let commentContent = "";
+                    if (customCommentCheckbox.checked) {
+                        const content = document.getElementById('comment-content').value || "Hello {emoji}";
+                        const parts = content.split('|');
+                        commentContent = processContent(parts[Math.floor(Math.random() * parts.length)]);
+                    } else {
+                        const comments = [
+                            "Nice post! {emoji}",
+                            "Great content! {time}",
+                            "Awesome! {string}",
+                            "Thanks for sharing! {emoji}",
+                            "Very informative! {time}"
+                        ];
+                        commentContent = processContent(comments[Math.floor(Math.random() * comments.length)]);
+                    }
+                    
+                    addAutoLog(`Commented: "${commentContent.substring(0, 30)}..."`, 'success');
+                }
+            }
+            
+            // Simulate reactions
+            if (reactMode && reactionsSent < maxReactions) {
+                const reactionsToSend = Math.min(groupsToProcess * 2, maxReactions - reactionsSent);
+                
+                // Get selected reactions
+                const selectedReactions = [];
+                if (document.getElementById('like').checked) selectedReactions.push('LIKE');
+                if (document.getElementById('love').checked) selectedReactions.push('LOVE');
+                if (document.getElementById('care').checked) selectedReactions.push('CARE');
+                if (document.getElementById('haha').checked) selectedReactions.push('HAHA');
+                if (document.getElementById('wow').checked) selectedReactions.push('WOW');
+                if (document.getElementById('sad').checked) selectedReactions.push('SAD');
+                if (document.getElementById('angry').checked) selectedReactions.push('ANGRY');
+                
+                if (selectedReactions.length > 0) {
+                    for (let i = 0; i < reactionsToSend; i++) {
+                        reactionsSent++;
+                        const reaction = selectedReactions[Math.floor(Math.random() * selectedReactions.length)];
+                        addAutoLog(`Reacted with ${reaction}`, 'success');
+                    }
+                }
+            }
+            
+            updateAutoStats();
+            
+            // Check if limits reached
+            const maxCommentsReached = commentMode && commentsSent >= maxComments;
+            const maxReactionsReached = reactMode && reactionsSent >= maxReactions;
+            
+            if ((commentMode && maxCommentsReached) || (reactMode && maxReactionsReached)) {
+                addAutoLog("Daily limits reached. Stopping auto interaction.", 'warning');
+                stopAutoInteraction();
+            }
+        }
+        
+        // Start auto interaction
+        function startAutoInteraction() {
+            const cookie = document.getElementById('auto-cookie').value.trim();
+            
+            if (!cookie) {
+                showNotification("Please enter a Facebook cookie", 'error');
+                return;
+            }
+            
+            if (!commentModeCheckbox.checked && !reactModeCheckbox.checked) {
+                showNotification("Please enable at least one mode (Comment or Reaction)", 'error');
+                return;
+            }
+            
+            autoRunning = true;
+            autoStartTime = new Date();
+            
+            // Start runtime updater
+            autoRuntimeInterval = setInterval(updateAutoRuntime, 1000);
+            
+            // Start auto interaction interval (simulated)
+            const minDelay = 60000; // 1 minute
+            const maxDelay = 900000; // 15 minutes
+            
+            autoInterval = setInterval(() => {
+                simulateAutoInteraction();
+            }, 5000); // Simulate every 5 seconds for demo
+            
+            // Reset stats
+            commentsSent = 0;
+            reactionsSent = 0;
+            groupsProcessed = 0;
+            usedComments.clear();
+            
+            // Update UI
+            startAutoBtn.innerHTML = '<i class="fas fa-pause-circle"></i> Pause';
+            startAutoBtn.classList.add('btn-secondary');
+            startAutoBtn.classList.remove('btn-primary');
+            
+            addAutoLog("Auto interaction started", 'success');
+            addAutoLog(`Comment mode: ${commentModeCheckbox.checked ? 'ON' : 'OFF'}`, 'info');
+            addAutoLog(`Reaction mode: ${reactModeCheckbox.checked ? 'ON' : 'OFF'}`, 'info');
+            
+            updateAutoStats();
+        }
+        
+        // Stop auto interaction
+        function stopAutoInteraction() {
+            autoRunning = false;
+            
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
+            }
+            
+            if (autoRuntimeInterval) {
+                clearInterval(autoRuntimeInterval);
+                autoRuntimeInterval = null;
+            }
+            
+            // Update UI
+            startAutoBtn.innerHTML = '<i class="fas fa-play-circle"></i> Start Auto Interaction';
+            startAutoBtn.classList.remove('btn-secondary');
+            startAutoBtn.classList.add('btn-primary');
+            
+            addAutoLog("Auto interaction stopped", 'warning');
+        }
+        
+        // Reset auto interaction
+        function resetAutoInteraction() {
+            stopAutoInteraction();
+            
+            commentsSent = 0;
+            reactionsSent = 0;
+            groupsProcessed = 0;
+            usedComments.clear();
+            
+            autoLog.innerHTML = '<div class="log-entry"><span class="log-time">[12:00:00]</span> Auto Interaction Tool Ready</div>';
+            autoRuntimeEl.textContent = '00:00';
+            
+            updateAutoStats();
+            addAutoLog("All settings and statistics have been reset", 'info');
+        }
+        
+        // ===============================
+        // TAB MANAGEMENT
+        // ===============================
+        
+        // Initialize tabs
+        function initializeTabs() {
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    btn.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+        
+        // ===============================
+        // EVENT LISTENERS - TOKEN FETCHER
+        // ===============================
+        
+        fetchBtn.addEventListener('click', async () => {
+            const cookie = cookieInput.value.trim();
+            
+            if (!cookie) {
+                tokenDisplay.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: #e74c3c;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <p>Please enter a valid Facebook cookie</p>
+                    </div>
+                `;
+                tokenDisplay.classList.add('token-error');
+                return;
+            }
+            
+            // Show loading
+            loadingOverlay.style.display = 'flex';
+            
+            // Fetch token (simulated)
+            const result = await simulateFetchToken(selectedTokenType, cookie);
+            displayTokenResult(result);
+        });
+        
+        clearBtn.addEventListener('click', () => {
+            cookieInput.value = '';
+            tokenDisplay.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px; color: #888;">
+                    <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                    <p>Your fetched token will appear here</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Select token type, enter cookie, and click "Fetch Token"</p>
+                </div>
+            `;
+            tokenDisplay.classList.remove('token-success', 'token-error');
+            
+            // Disable buttons
+            copyBtn.disabled = true;
+            testBtn.disabled = true;
+            saveBtn.disabled = true;
+        });
+        
+        sampleBtn.addEventListener('click', () => {
+            const sampleCookie = "sb=ABCDEFGHIJKLMNOPQRSTUVWX; datr=abcdefghijklmnopqrstuvw-; c_user=1234567890; xs=abcdefghijklmnopqrstuvwxyz%3D%3D; fr=abcdefghijklmnopqrstuvwxyz%3D%3D; presence=abcdefghijklmnopqrstuvwxyz%3D%3D";
+            cookieInput.value = sampleCookie;
+            
+            // Visual feedback
+            sampleBtn.innerHTML = '<i class="fas fa-check"></i> Sample Loaded';
+            setTimeout(() => {
+                sampleBtn.innerHTML = '<i class="fas fa-vial"></i> Sample Cookie';
+            }, 1500);
+        });
+        
+        copyBtn.addEventListener('click', () => {
+            const tokenMatch = tokenDisplay.textContent.match(/[A-Z]{4,20}[A-Z0-9]{20,}/);
+            if (tokenMatch && navigator.clipboard) {
+                navigator.clipboard.writeText(tokenMatch[0]).then(() => {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.style.background = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+        });
+        
+        testBtn.addEventListener('click', () => {
+            // Simulate token test
+            testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+            testBtn.disabled = true;
+            
+            setTimeout(() => {
+                testBtn.innerHTML = '<i class="fas fa-vial"></i> Test Token';
+                testBtn.disabled = false;
+                
+                // Show test result
+                const alertDiv = document.createElement('div');
+                alertDiv.style.cssText = 'background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 10px 15px; margin-top: 15px; border-radius: 4px;';
+                alertDiv.innerHTML = '<i class="fas fa-check-circle"></i> Token is valid and active.';
+                
+                tokenDisplay.appendChild(alertDiv);
+                
+                // Remove after 5 seconds
+                setTimeout(() => {
+                    if (tokenDisplay.contains(alertDiv)) {
+                        tokenDisplay.removeChild(alertDiv);
+                    }
+                }, 5000);
+            }, 1500);
+        });
+        
+        saveBtn.addEventListener('click', () => {
+            const tokenMatch = tokenDisplay.textContent.match(/[A-Z]{4,20}[A-Z0-9]{20,}/);
+            if (tokenMatch) {
+                const blob = new Blob([tokenMatch[0]], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `facebook_token_${selectedTokenType}_${new Date().getTime()}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Visual feedback
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<i class="far fa-save"></i> Save Token';
+                }, 1500);
+            }
+        });
+        
+        // ===============================
+        // EVENT LISTENERS - AUTO INTERACTION
+        // ===============================
+        
+        // Toggle comment settings
+        commentModeCheckbox.addEventListener('change', function() {
+            commentSettings.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Toggle reaction settings
+        reactModeCheckbox.addEventListener('change', function() {
+            reactSettings.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Toggle custom comment input
+        customCommentCheckbox.addEventListener('change', function() {
+            customCommentInput.style.display = this.checked ? 'block' : 'none';
+            fileCommentInput.style.display = this.checked ? 'none' : 'block';
+        });
+        
+        // Toggle image settings
+        imageModeCheckbox.addEventListener('change', function() {
+            imageSettings.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Toggle image source
+        imageSourceSelect.addEventListener('change', function() {
+            document.getElementById('image-link-input').style.display = this.value === 'link' ? 'block' : 'none';
+            document.getElementById('image-file-input').style.display = this.value === 'file' ? 'block' : 'none';
+        });
+        
+        // Auto interaction buttons
+        startAutoBtn.addEventListener('click', () => {
+            if (autoRunning) {
+                stopAutoInteraction();
+            } else {
+                startAutoInteraction();
+            }
+        });
+        
+        stopAutoBtn.addEventListener('click', stopAutoInteraction);
+        
+        resetAutoBtn.addEventListener('click', resetAutoInteraction);
+        
+        // ===============================
+        // MODAL HANDLING
+        // ===============================
+        
+        // Show warning modal on first visit
+        if (!localStorage.getItem('warningAccepted')) {
+            setTimeout(() => {
+                warningModal.style.display = 'flex';
+            }, 1000);
+        }
+        
+        acceptWarningBtn.addEventListener('click', function() {
+            warningModal.style.display = 'none';
+            localStorage.setItem('warningAccepted', 'true');
+            showNotification("Welcome to Facebook Tools Pro!", 'success');
+        });
+        
+        // Close modal when clicking outside
+        warningModal.addEventListener('click', function(e) {
+            if (e.target === warningModal) {
+                warningModal.style.display = 'none';
+            }
+        });
+        
+        // ===============================
+        // INITIALIZATION
+        // ===============================
+        
+        function init() {
+            // Initialize token fetcher
+            initializeTokenGrid();
+            updateStats();
+            updateActiveTime();
+            
+            // Start active time updater
+            activeTimeInterval = setInterval(updateActiveTime, 1000);
+            
+            // Initialize tabs
+            initializeTabs();
+            
+            // Add some visual effects
+            document.querySelectorAll('.token-option').forEach((el, i) => {
+                el.style.animationDelay = `${i * 0.05}s`;
+            });
+            
+            console.log("Facebook Tools Pro initialized");
+            
+            // Show welcome message
+            setTimeout(() => {
+                showNotification("Facebook Tools Pro loaded successfully!", 'success');
+            }, 500);
+        }
+        
+        // Start when page loads
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
